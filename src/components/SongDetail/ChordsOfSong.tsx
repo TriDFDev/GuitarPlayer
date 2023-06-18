@@ -1,4 +1,4 @@
-import {Permission, Image,StyleSheet, Text, View} from 'react-native';
+import {Permission, Image, StyleSheet, Text, View} from 'react-native';
 import React, {
   useState,
   useEffect,
@@ -9,8 +9,8 @@ import React, {
 import CustomTitle from '../Global/CustomTitle';
 import ChordButton from '../Global/ChordButton';
 import {DARKCOLORS} from '../../constants/colors';
-import { Svg, SvgXml } from 'react-native-svg';
-import { xml } from '../../assets/SVG/Chord';
+import ChordChart from '../Global/ChordChart';
+import Chord from '../Global/Chord';
 
 interface Chordprops {
   value: string[];
@@ -38,7 +38,7 @@ const ChordsOfSong = forwardRef<MyComponentMethods, Chordprops>(
     const getViewLocation = (id: any) => {
       chordRef.current?.measure(
         (x: number, y: number, pageX: number, pageY: number) => {
-          console.log('view container', x, y ,pageX, pageY);
+          console.log('view container', x, y, pageX, pageY);
         },
       );
     };
@@ -48,12 +48,11 @@ const ChordsOfSong = forwardRef<MyComponentMethods, Chordprops>(
         <CustomTitle title="Chords" />
         <View style={styles.chordsList}>
           {props.value.map((item: string, index: number) => (
-            <View
-              key={index}>
+            <View key={index}>
               <View
                 style={isSelectedTopic(index) ? styles.chord : styles.unshow}>
                 <View>
-                  <SvgXml xml={xml} width="100%" height="100%"/>
+                  <Chord nameChord={item} width={90} height={130}/>
                 </View>
               </View>
               <ChordButton

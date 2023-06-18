@@ -11,6 +11,9 @@ export type RootStackParamList = {
   SignIn: undefined;
   SongDetail: {id?: number} | undefined;
   Search: undefined;
+  ChordLibrary: undefined;
+  ChordGame: undefined;
+  GameDetail: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
