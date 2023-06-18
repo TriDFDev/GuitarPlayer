@@ -1,17 +1,19 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View } from 'react-native'
-import { BottomTabData } from '../constants/bottomtab';
-import { BlurView } from '@react-native-community/blur';
+import { StyleSheet, Text, View } from 'react-native';
 import { TouchableHighlight } from 'react-native';
+import { BlurView } from '@react-native-community/blur';
+
+import { BottomTabData } from '../constants/bottomtab';
 import { DARKCOLORS } from '../constants/colors';
+import { HEADERSTYLE } from '../styles/generalStyle';
 
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
-<Tab.Navigator 
+    <Tab.Navigator 
     screenOptions={{
-    headerStyle: styles.header,
+    headerStyle: HEADERSTYLE.header,
     headerTitleStyle: styles.title,
     tabBarShowLabel: false,
     tabBarStyle: styles.tabBar,
@@ -51,6 +53,7 @@ tabBar: {
   
 },  absolute: {
     position: "absolute",
+    zIndex:1000,
     top: 0,
     left: 0,
     bottom: 0,
@@ -61,11 +64,7 @@ tabBar: {
     borderWidth: 0.2,
     borderColor: DARKCOLORS.iconColor   
   },
-  header: {
-    backgroundColor: DARKCOLORS.primaryColor,
-    height: 50,
-    elevation:0,
-  },
+
   title: {
     color:DARKCOLORS.hightLightColor
   }
