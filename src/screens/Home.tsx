@@ -5,8 +5,9 @@ import {
   Text,
   TouchableHighlight,
   View,
+  LogBox
 } from 'react-native';
-import React from 'react';
+import React,{useEffect} from 'react';
 import {DARKCOLORS} from '../constants/colors';
 import SongCategories from '../components/SongLibrary/SongCategories';
 import YourPlaylist from '../components/SongLibrary/YourPlaylist';
@@ -17,12 +18,16 @@ import {useNavigation} from '@react-navigation/native';
 import {RootStackScreenProps} from '../types/navigation/types';
 import MainContainer from '../components/Global/MainContainer';
 
+
 const Home = () => {
   const navigation =
     useNavigation<RootStackScreenProps<'Search'>['navigation']>();
   const handleNavigate = () => {
     navigation.navigate('Search');
   };
+  useEffect(() => {
+  LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
+}, [])
   return (
     <MainContainer>
       <CustomStatusBar />

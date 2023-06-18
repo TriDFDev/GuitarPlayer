@@ -1,5 +1,8 @@
-import {all} from 'redux-saga/effects';
+import {all, fork} from 'redux-saga/effects';
+import songSaga from './songSaga';
+import genreSaga from './genreSaga';
+import songDetailSaga from './songDetailSaga';
+
 export default function* rootSaga() {
-  console.log('TestSaga');
-  
+  yield all([songSaga(), genreSaga(), songDetailSaga()]);
 }
