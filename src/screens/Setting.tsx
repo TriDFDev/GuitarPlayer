@@ -24,13 +24,20 @@ import {
   SoundOff,
 } from 'iconoir-react-native';
 import {SettingItemData} from '../constants/settingItem';
-import setVolumeInAsyncStorage from '../utils/setInAsyncStore';
 import {getValueFromAsyncStorage} from '../utils/getValueAsyncStore';
+import setValueInAsyncStorage from '../utils/setInAsyncStore';
+import {useNavigation} from '@react-navigation/native';
+import {HomeTabScreenProps, RootStackScreenProps} from '../types/navigation/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector} from 'react-redux';
+import {RootState} from '../stores/reducers/_index';
 const Setting = () => {
   const [volume, setVolume] = useState<number>(0);
+  const navigation =
+    useNavigation<RootStackScreenProps<'MyTabs'>['navigation']>();
   const handleGetVolume = async (value: number) => {
     setVolume(value);
-    await setVolumeInAsyncStorage('volume', value);
+    await setValueInAsyncStorage('volume', value);
   };
   const getVolumeData = async () => {
     const volume = await getValueFromAsyncStorage('volume');
@@ -38,10 +45,31 @@ const Setting = () => {
       setVolume(volume);
     }
   };
+
   useEffect(() => {
     getVolumeData();
   }, []);
-  console.log(volume);
+
+  const handleLogOut = () => {
+    AsyncStorage.removeItem('user_Info');
+    navigation.navigate('SignIn')
+  };
+
+  const {user} = useSelector((state: RootState) => state.user);
+  
+  const handleOnPress = (type: string) => {
+    switch (type) {
+      case 'Logout': {
+        return handleLogOut();
+      }
+      case 'Account': {
+        return console.log('account');
+      }
+      case 'About': {
+        return console.log('About me');
+      }
+    }
+  };
 
   return (
     <MainContainer>
@@ -51,16 +79,16 @@ const Setting = () => {
             blurRadius={80}
             resizeMode="cover"
             source={{
-              uri: 'https://cafefcdn.com/thumb_w/640/203337114487263232/2023/3/9/photo1678366776583-16783667766431882646483.jpg',
+              uri: `${user?.avatar}`,
             }}
             style={styles.InfoAccount}>
             <Image
               style={styles.avatar}
               source={{
-                uri: 'https://cafefcdn.com/thumb_w/640/203337114487263232/2023/3/9/photo1678366776583-16783667766431882646483.jpg',
+                uri: `${user?.avatar}`,
               }}
             />
-            <Text style={styles.name}>Alexander-Arnold</Text>
+            <Text style={styles.name}>{user?.userName}</Text>
           </ImageBackground>
           <View style={styles.settings}>
             <View style={styles.setting}>
@@ -124,7 +152,10 @@ const Setting = () => {
           </View>
           <View style={styles.settingBottom}>
             {SettingItemData.map((item: any, index: number) => (
-              <Pressable key={index} style={styles.settingItem}>
+              <Pressable
+                onPress={() => handleOnPress(item.title)}
+                key={index}
+                style={styles.settingItem}>
                 <View style={styles.settingItemRight}>
                   <View style={styles.icon}>{item.icon}</View>
                   <Text style={styles.itemText}>{item.title}</Text>

@@ -16,6 +16,7 @@ import {RootState} from '../stores/reducers/_index';
 import SongDetailLoader from '../components/Global/SongDetailLoader';
 
 const SongDetail = () => {
+  const [inPlayList,setInPlayList] = useState<boolean>(false)
   const {songDetail, pending, error} = useSelector(
     (state: RootState) => state.songDetail,
   );
@@ -31,12 +32,26 @@ const SongDetail = () => {
   useEffect(() => {
     dispatch(fetchSongDetailRequest(id));
   }, []);
+  const {favSongs} = useSelector(
+    (state: RootState) => state.favSongs,
+  );
+  const findSongById = (songId: number) => {
+  return favSongs.find((item) => item.songId === songId);
+};
+  const favSong = findSongById(id)
+    
+  const isInPlayList = favSongs.some((item) =>item.songId === id);
   return (
     <MainContainer
       onTouchStart={() => {
         pending ? null : ref.current.unSelect();
       }}>
-      <ScreenHeader onPress={handleNavigate} iconRight={true} />
+      <ScreenHeader 
+        songId={id}
+        idFavSong={favSong?.id}
+        inPlayList={isInPlayList}
+        onPress={handleNavigate}
+        iconRight={true} />
       {pending ? (
         <SongDetailLoader />
       ) : (
